@@ -1,5 +1,5 @@
 import { EstateTransactionType } from '../types/estate-transaction';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -13,19 +13,15 @@ export class EstateTransactionService {
     this.allData = JSON.parse(fileData) as EstateTransactionType[];
   }
 
-  searchData(year?: number, prefCode?: number, type?: number) {
-    let result = this.allData;
+  searchData(year: number, prefCode: number, type: number) {
+    const result = this.allData.filter(
+      (item) => item.year === year && item.prefectureCode === prefCode && item.type === type,
+    );
 
-    if (year) {
-      result = result.filter((item) => item.year === year);
-    }
-
-    if (prefCode) {
-      result = result.filter((item) => item.prefectureCode === prefCode);
-    }
-
-    if (type) {
-      result = result.filter((item) => item.type === type);
+    if (!result.length) {
+      throw new NotFoundException(
+        `指定された条件のデータが見つかりませんでした（year: ${year}, prefCode: ${prefCode}, type: ${type}）`,
+      );
     }
 
     return result;
