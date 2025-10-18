@@ -1,26 +1,16 @@
-import { EstateTransactionType } from '../types/estate-transaction';
+import { EstateTransactionRepository } from './repositories/estate-transaction.repository';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import * as fs from 'fs';
-import * as path from 'path';
 
 @Injectable()
 export class EstateTransactionService {
-  private allData: EstateTransactionType[] = [];
+  constructor(private readonly repository: EstateTransactionRepository) {}
 
-  constructor() {
-    const filePath = path.join(__dirname, '..', 'assets', 'estate_transactions.json');
-    const fileData = fs.readFileSync(filePath, 'utf-8');
-    this.allData = JSON.parse(fileData) as EstateTransactionType[];
-  }
-
-  searchData(year: number, prefCode: number, type: number) {
-    const result = this.allData.filter(
-      (item) => item.year === year && item.prefectureCode === prefCode && item.type === type,
-    );
+  searchData(year: number, prefectureCode: number, type: number) {
+    const result = this.repository.findByConditions(year, prefectureCode, type);
 
     if (!result.length) {
       throw new NotFoundException(
-        `指定された条件のデータが見つかりませんでした（year: ${year}, prefCode: ${prefCode}, type: ${type}）`,
+        `指定された条件のデータが見つかりませんでした（year: ${year}, prefCode: ${prefectureCode}, type: ${type}）`,
       );
     }
 
