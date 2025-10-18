@@ -1,3 +1,4 @@
+import { SearchEstateDto } from './dto/search-estate.dto';
 import { EstateTransactionService } from './estate-transaction.service';
 import { Controller, Get, Query } from '@nestjs/common';
 
@@ -6,15 +7,9 @@ export class EstateTransactionController {
   constructor(private readonly estateTransactionService: EstateTransactionService) {}
 
   @Get('bar')
-  getEstateData(
-    @Query('year') year?: string,
-    @Query('prefCode') prefCode?: string,
-    @Query('type') type?: string,
-  ) {
-    const yearNumber = year ? Number(year) : undefined;
-    const prefCodeNumber = prefCode ? Number(prefCode) : undefined;
-    const typeNumber = type ? Number(type) : undefined;
+  getEstateData(@Query() query: SearchEstateDto) {
+    const { year, prefCode, type } = query;
 
-    return this.estateTransactionService.searchData(yearNumber, prefCodeNumber, typeNumber);
+    return this.estateTransactionService.searchData(year, prefCode, type);
   }
 }
