@@ -4,19 +4,15 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Debug Nest Framework",
-      "program": "${workspaceFolder}/src/main.ts",
-      "runtimeArgs": [
-        "--nolazy",
-        "-r",
-        "ts-node/register",
-        "-r",
-        "tsconfig-paths/register"
-      ],
+      "name": "Debug Nest (Watch Mode)",
+      "runtimeExecutable": "npm",
+      "args": ["run", "start:debug"],
+      "console": "integratedTerminal",
+      "autoAttachChildProcesses": true,
+      "restart": true,
       "sourceMaps": true,
       "envFile": "${workspaceFolder}/.env",
-      "cwd": "${workspaceRoot}",
-      "console": "integratedTerminal"
+      "cwd": "${workspaceFolder}"
     }
   ]
 }

@@ -5,10 +5,29 @@ import * as path from 'path';
 
 @Injectable()
 export class EstateTransactionService {
-  getAllData() {
+  private allData: EstateTransactionType[] = [];
+
+  constructor() {
     const filePath = path.join(__dirname, '..', 'assets', 'estate_transactions.json');
     const fileData = fs.readFileSync(filePath, 'utf-8');
-    const data = JSON.parse(fileData) as EstateTransactionType[];
-    return data;
+    this.allData = JSON.parse(fileData) as EstateTransactionType[];
+  }
+
+  searchData(year?: number, prefCode?: number, type?: number) {
+    let result = this.allData;
+
+    if (year) {
+      result = result.filter((item) => item.year === year);
+    }
+
+    if (prefCode) {
+      result = result.filter((item) => item.prefectureCode === prefCode);
+    }
+
+    if (type) {
+      result = result.filter((item) => item.type === type);
+    }
+
+    return result;
   }
 }
