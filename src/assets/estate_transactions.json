@@ -452,6 +452,24 @@
   {
     "year": 2016,
     "prefectureCode": 13,
+    "type": 1,
+    "data": {
+      "result": {
+        "prefectureCode": "13",
+        "prefectureName": "東京都",
+        "type": "1",
+        "years": [
+          {
+            "year": 2016,
+            "value": 228199
+          }
+        ]
+      }
+    }
+  },
+  {
+    "year": 2016,
+    "prefectureCode": 13,
     "type": 2,
     "data": {
       "result": {
