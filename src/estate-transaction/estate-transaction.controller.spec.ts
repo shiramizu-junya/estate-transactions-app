@@ -32,7 +32,7 @@ describe('EstateTransactionController', () => {
   });
 
   describe('getEstateData', () => {
-    it('正しいパラメータでServiceを呼び出し、Serviceの返り値をそのまま返すこと', () => {
+    test('正しいパラメータでServiceを呼び出し、Serviceの返り値をそのまま返すこと', () => {
       const query: SearchEstateDto = {
         year: 2015,
         prefCode: 13,
@@ -55,7 +55,7 @@ describe('EstateTransactionController', () => {
       expect(result).toBe(mockResult);
     });
 
-    it('Serviceが例外を投げた場合、そのまま例外を投げること', () => {
+    test('Serviceが例外を投げた場合、そのまま例外を投げること', () => {
       const query: SearchEstateDto = {
         year: 9999,
         prefCode: 99,
