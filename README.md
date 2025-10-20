@@ -103,3 +103,76 @@ npm run lint
 ```shell
 npm run format
 ```
+
+## ■実装済み要件と未実装要件
+
+### 機能要件
+- 不動産取引価格を検索する API を実装
+
+### 非機能要件
+- JSONファイルをインポートして不動産取引価格を返す
+- Postman でAPIコール可能
+- Nest.js利用
+- ESLint / Prettierによるリンター・フォーマッターの設定
+- GitHubでバージョン管理
+- Controller > Service > Repository 構成で実装
+- クエリパラメータのバリデーションを実装（class-validator / class-transformer使用）
+- Controller, Service, Repository, DTOにユニットテストを追加
+
+### 未対応要件
+- Controller > UseCase > Repository > Infrastructure 構成
+
+## ■工夫した点
+- `husky`と`lint-staged`を使ってcommitしたファイルに対してのみリンター・フォーマッターを実行するようにしました。
+- `.vscode/launch.json`でデバッグ構成を追加しました。
+- `src/types/estate-transaction.ts`で、JSONデータ都道府県コードなどをリテラル型で定義することで、型の恩恵を受けられるようにしました。
+
+## ■テストケース
+
+```jsx
+✅ 正常系テストケース
+全パラメータが正しい
+http://localhost:3000/api/v1/townPlanning/estateTransaction/bar?year=2015&prefCode=13&type=1
+```
+```jsx
+# ❌ 異常系テストケース
+
+### yearが無い
+http://localhost:3000/api/v1/townPlanning/estateTransaction/bar?prefCode=13&type=1
+
+### prefCodeが無い
+http://localhost:3000/api/v1/townPlanning/estateTransaction/bar?year=2015&type=1
+
+### typeが無い
+http://localhost:3000/api/v1/townPlanning/estateTransaction/bar?year=2015&prefCode=13
+
+### 全パラメータが無い
+http://localhost:3000/api/v1/townPlanning/estateTransaction/bar
+
+### yearが最小値未満
+http://localhost:3000/api/v1/townPlanning/estateTransaction/bar?year=2014&prefCode=13&type=1
+
+### yearが最大値超過
+http://localhost:3000/api/v1/townPlanning/estateTransaction/bar?year=2019&prefCode=13&type=1
+
+### yearが小数
+http://localhost:3000/api/v1/townPlanning/estateTransaction/bar?year=2015.5&prefCode=13&type=1
+
+### prefCodeが範囲外
+http://localhost:3000/api/v1/townPlanning/estateTransaction/bar?year=2015&prefCode=7&type=1
+
+### prefCodeが範囲外
+http://localhost:3000/api/v1/townPlanning/estateTransaction/bar?year=2015&prefCode=15&type=1
+
+### prefCodeが整数でない
+http://localhost:3000/api/v1/townPlanning/estateTransaction/bar?year=2015&prefCode=tokyo&type=1
+
+### typeが範囲外
+http://localhost:3000/api/v1/townPlanning/estateTransaction/bar?year=2015&prefCode=13&type=0
+
+### typeが範囲外
+http://localhost:3000/api/v1/townPlanning/estateTransaction/bar?year=2015&prefCode=13&type=3
+
+### typeが整数でない
+http://localhost:3000/api/v1/townPlanning/estateTransaction/bar?year=2015&prefCode=13&type=residential
+```
